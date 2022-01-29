@@ -52,7 +52,7 @@ class CircularProgressView: UIView {
     progressLayer.lineCap = .round
     progressLayer.lineWidth = 10.0
     progressLayer.strokeEnd = 0
-    progressLayer.strokeColor = UIColor(named: "RingColor")?.cgColor
+    progressLayer.strokeColor = UIColor(named: "Color1")?.cgColor
     
     layer.addSublayer(progressLayer)
     progressAnimation(duration: duration)
