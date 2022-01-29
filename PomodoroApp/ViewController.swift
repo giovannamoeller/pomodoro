@@ -17,6 +17,25 @@ class ViewController: UIViewController {
     return imageView
   }()
   
+  private lazy var pomodoroButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("pomodoro", for: .normal)
+    button.tintColor = UIColor(named: "ButtonTextColorDisabled")
+    return button
+  }()
+  
+  private lazy var buttonsStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.addArrangedSubview(pomodoroButton)
+    stackView.axis = .horizontal
+    stackView.distribution = .fillEqually
+    stackView.backgroundColor = UIColor(named: "DarkBackgroundColor")
+    stackView.layer.cornerRadius = 32.0
+    return stackView
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     circularProgressView = CircularProgressView(frame: .zero, duration: 25 * 60)
@@ -29,6 +48,7 @@ class ViewController: UIViewController {
     view.addSubview(ovalImageView)
     view.addSubview(circularProgressView)
     //view.addSubview(timeText)
+    view.addSubview(buttonsStackView)
   }
   
   func configureUI() {
@@ -38,8 +58,11 @@ class ViewController: UIViewController {
   func setUpConstraints() {
     circularProgressView.center = view.center
     NSLayoutConstraint.activate([
-      //timeText.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      //timeText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      
+      buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
+      buttonsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -32.0),
+      buttonsStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32.0),
+      buttonsStackView.heightAnchor.constraint(equalToConstant: 64),
       
       ovalImageView.centerYAnchor.constraint(equalTo: circularProgressView.centerYAnchor),
       ovalImageView.centerXAnchor.constraint(equalTo: circularProgressView.centerXAnchor),

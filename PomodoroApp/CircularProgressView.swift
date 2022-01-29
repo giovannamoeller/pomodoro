@@ -37,7 +37,7 @@ class CircularProgressView: UIView {
     let circularPath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width, y: frame.size.height), radius: 130, startAngle: startPoint, endAngle: endPoint, clockwise: true)
     
     circleLayer.path = circularPath.cgPath
-    circleLayer.fillColor = UIColor(named: "OvalColor")?.cgColor
+    circleLayer.fillColor = UIColor(named: "DarkBackgroundColor")?.cgColor
     circleLayer.lineCap = .round
     circleLayer.strokeEnd = 1.0
     circleLayer.strokeColor = UIColor.clear.cgColor
