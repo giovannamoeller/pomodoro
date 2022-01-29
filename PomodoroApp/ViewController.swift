@@ -30,52 +30,47 @@ class ViewController: UIViewController {
     return imageView
   }()
   
-  private lazy var pomodoroButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("pomodoro", for: .normal)
-    button.titleLabel?.font = .systemFont(ofSize: 12.0, weight: .bold)
-    button.tintColor = UIColor(named: "ButtonTextColorDisabled")?.withAlphaComponent(0.4)
-    button.backgroundColor = UIColor(named: "Color1")
-    button.clipsToBounds = true
-    button.layer.cornerRadius = 26
-    button.layer.cornerCurve = .continuous
+  private lazy var buttonsView: UISegmentedControl = {
+    let view = UISegmentedControl()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.insertSegment(withTitle: "pomodoro", at: 0, animated: true)
+    view.insertSegment(withTitle: "short break", at: 1, animated: true)
+    view.insertSegment(withTitle: "long break", at: 2, animated: true)
+    view.selectedSegmentIndex = 0
     
-    return button
+    //view.setBackgroundImage(UIImage(named: "Rectangle"), for: .normal, barMetrics: .default)
+    
+    view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)
+    
+    view.selectedSegmentTintColor = UIColor(named: "Color1")
+    
+    let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "ButtonTextColorDisabled")!.withAlphaComponent(0.4), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold)]
+    let highlitedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "HighlightedButtonColor")!, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold)]
+    view.setTitleTextAttributes(titleTextAttributes, for: .normal)
+    view.setTitleTextAttributes(highlitedTitleTextAttributes, for: .selected)
+    
+    circularProgressView.setDuration(duration: Time.pomodoro.rawValue)
+    
+    view.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
+    
+    //view.roundCorners(corners: .allCorners, radius: 32.0)
+    //view.layer.masksToBounds = true
+    
+    
+    
+    return view
   }()
   
-  private lazy var shortBreakButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("short break", for: .normal)
-    button.titleLabel?.font = .systemFont(ofSize: 12.0, weight: .bold)
-    button.tintColor = UIColor(named: "ButtonTextColorDisabled")?.withAlphaComponent(0.4)
-    return button
-  }()
-  
-  private lazy var longBreakButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("long break", for: .normal)
-    button.titleLabel?.font = .systemFont(ofSize: 12.0, weight: .bold)
-    button.tintColor = UIColor(named: "ButtonTextColorDisabled")?.withAlphaComponent(0.4)
-    return button
-  }()
-  
-  private lazy var buttonsStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    [pomodoroButton, shortBreakButton, longBreakButton].forEach { button in
-      stackView.addArrangedSubview(button)
+  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
+    print("alo?")
+    switch sender.selectedSegmentIndex {
+    case 0: circularProgressView.setDuration(duration: Time.pomodoro.rawValue)
+    case 1: circularProgressView.setDuration(duration: Time.shortBreak.rawValue)
+    case 2: circularProgressView.setDuration(duration: Time.longBreak.rawValue)
+    default: fatalError("Index not found")
     }
-    stackView.axis = .horizontal
-    stackView.distribution = .fillEqually
-    stackView.backgroundColor = UIColor(named: "DarkBackgroundColor")
-    stackView.layer.cornerRadius = 32.0
-    stackView.layoutMargins = .init(top: 8, left: 8, bottom: 8, right: 8)
-    stackView.isLayoutMarginsRelativeArrangement = true
-    return stackView
-  }()
+  }
+  
   
   private lazy var configButton: UIButton = {
     let button = UIButton(type: .system)
@@ -89,7 +84,7 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    circularProgressView = CircularProgressView(frame: .zero, duration: 25 * 60)
+    circularProgressView = CircularProgressView()
     addSubviews()
     configureUI()
     setUpConstraints()
@@ -99,8 +94,8 @@ class ViewController: UIViewController {
     view.addSubview(titleText)
     view.addSubview(ovalImageView)
     view.addSubview(circularProgressView)
-    //view.addSubview(timeText)
-    view.addSubview(buttonsStackView)
+    buttonsView.layer.cornerRadius = 32.0
+    view.addSubview(buttonsView)
     view.addSubview(configButton)
   }
   
@@ -115,10 +110,10 @@ class ViewController: UIViewController {
       titleText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       titleText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32.0),
       
-      buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-      buttonsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-      buttonsStackView.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 32.0),
-      buttonsStackView.heightAnchor.constraint(equalToConstant: 64),
+      buttonsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+      buttonsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
+      buttonsView.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 32.0),
+      buttonsView.heightAnchor.constraint(equalToConstant: 52),
       
       ovalImageView.centerYAnchor.constraint(equalTo: circularProgressView.centerYAnchor),
       ovalImageView.centerXAnchor.constraint(equalTo: circularProgressView.centerXAnchor),
@@ -128,5 +123,14 @@ class ViewController: UIViewController {
     ])
   }
   
+  
 }
 
+extension UIView {
+   func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        layer.mask = mask
+    }
+}

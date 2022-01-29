@@ -15,6 +15,7 @@
 		48D7B69627A4D3F400455593 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D7B69427A4D3F400455593 /* LaunchScreen.storyboard */; };
 		48D7B69E27A4FB5100455593 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B69D27A4FB5100455593 /* CircularProgressView.swift */; };
 		48D7B6A027A5BC4F00455593 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B69F27A5BC4F00455593 /* ButtonsView.swift */; };
+		48D7B6A227A5F28100455593 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B6A127A5F28100455593 /* Time.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		48D7B69727A4D3F400455593 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48D7B69D27A4FB5100455593 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		48D7B69F27A5BC4F00455593 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
+		48D7B6A127A5F28100455593 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				48D7B69727A4D3F400455593 /* Info.plist */,
 				48D7B69D27A4FB5100455593 /* CircularProgressView.swift */,
 				48D7B69F27A5BC4F00455593 /* ButtonsView.swift */,
+				48D7B6A127A5F28100455593 /* Time.swift */,
 			);
 			path = PomodoroApp;
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48D7B6A227A5F28100455593 /* Time.swift in Sources */,
 				48D7B68E27A4D3F200455593 /* ViewController.swift in Sources */,
 				48D7B6A027A5BC4F00455593 /* ButtonsView.swift in Sources */,
 				48D7B68A27A4D3F200455593 /* AppDelegate.swift in Sources */,
