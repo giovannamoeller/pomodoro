@@ -16,16 +16,11 @@ class CircularProgressView: UIView {
   private var endPoint = CGFloat(3 * Double.pi / 2)
   private lazy var timer: Timer = Timer()
   
-  private lazy var timeText: UILabel = {
-    let text = UILabel()
-    text.translatesAutoresizingMaskIntoConstraints = false
-    text.textColor = .white
-    text.font = .systemFont(ofSize: 48.0, weight: .heavy)
-    return text
-  }()
-  
-  override init(frame: CGRect) {
+  private var timeText: UILabel?
+
+  init(frame: CGRect, timeText: UILabel) {
     super.init(frame: frame)
+    self.timeText = timeText
     createCircularPath()
   }
   
@@ -37,6 +32,7 @@ class CircularProgressView: UIView {
     
     let circularPath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width, y: frame.size.height), radius: 130, startAngle: startPoint, endAngle: endPoint, clockwise: true)
     
+    
     circleLayer.path = circularPath.cgPath
     circleLayer.fillColor = UIColor(named: "DarkBackgroundColor")?.cgColor
     circleLayer.lineCap = .round
@@ -44,8 +40,6 @@ class CircularProgressView: UIView {
     circleLayer.strokeColor = UIColor.clear.cgColor
     
     layer.addSublayer(circleLayer)
-    addSubview(timeText)
-    setUpConstraints()
     
     let pathProgressLayer = UIBezierPath(arcCenter: CGPoint(x: frame.size.width, y: frame.size.height), radius: 110, startAngle: startPoint, endAngle: endPoint, clockwise: true)
     progressLayer.path = pathProgressLayer.cgPath
@@ -56,11 +50,18 @@ class CircularProgressView: UIView {
     progressLayer.strokeColor = UIColor(named: "Color1")?.cgColor
     
     layer.addSublayer(progressLayer)
+    
+    
+    
   }
   
   func setDuration(duration: TimeInterval) {
     print(duration)
     progressAnimation(duration: duration)
+  }
+  
+  func setText(duration: TimeInterval) {
+    timeText?.text = String(duration * 60)
   }
   
   func progressAnimation(duration: TimeInterval) {
@@ -80,7 +81,6 @@ class CircularProgressView: UIView {
   
     timer.invalidate()
     
-    timeText.text = String(duration)
     
     let durationInSeconds = duration * 60
     initTimer(duration: durationInSeconds)
@@ -94,7 +94,7 @@ class CircularProgressView: UIView {
     var runCount = 0
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
       runCount += 1
-      self.timeText.text = String(duration - Double(runCount))
+      self.timeText?.text = String(duration - Double(runCount))
       if runCount == Int(duration) {
         timer.invalidate()
       }
@@ -102,11 +102,6 @@ class CircularProgressView: UIView {
     timer.fire()
   }
   
-  func setUpConstraints() {
-    NSLayoutConstraint.activate([
-      timeText.centerYAnchor.constraint(equalTo: centerYAnchor),
-      timeText.centerXAnchor.constraint(equalTo: centerXAnchor),
-    ])
-  }
+  
   
 }

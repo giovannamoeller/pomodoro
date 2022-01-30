@@ -49,24 +49,51 @@ class ViewController: UIViewController {
     view.setTitleTextAttributes(titleTextAttributes, for: .normal)
     view.setTitleTextAttributes(highlitedTitleTextAttributes, for: .selected)
     
-    circularProgressView.setDuration(duration: Time.pomodoro.rawValue)
+    circularProgressView.setText(duration: Time.pomodoro.rawValue)
     
     view.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
-    
-    //view.roundCorners(corners: .allCorners, radius: 32.0)
-    //view.layer.masksToBounds = true
-    
-    
-    
     return view
   }()
   
-  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
-    print("alo?")
-    switch sender.selectedSegmentIndex {
+  private lazy var timeText: UILabel = {
+    let text = UILabel()
+    text.translatesAutoresizingMaskIntoConstraints = false
+    text.textColor = .white
+    text.font = .systemFont(ofSize: 48.0, weight: .heavy)
+    return text
+  }()
+  
+  private lazy var startButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    let attributedString = NSAttributedString(
+      string: "start".uppercased(), attributes: [
+        NSAttributedString.Key.kern: 2.0,
+      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold),
+      NSAttributedString.Key.foregroundColor: UIColor.white
+     ]
+    )
+    button.setAttributedTitle(attributedString, for: .normal)
+    button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+    return button
+  }()
+  
+  @objc func buttonPressed() {
+    switch buttonsView.selectedSegmentIndex {
     case 0: circularProgressView.setDuration(duration: Time.pomodoro.rawValue)
     case 1: circularProgressView.setDuration(duration: Time.shortBreak.rawValue)
     case 2: circularProgressView.setDuration(duration: Time.longBreak.rawValue)
+    default: fatalError("Index not found")
+    }
+  }
+  
+  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
+    print("alo?")
+    
+    switch sender.selectedSegmentIndex {
+    case 0: circularProgressView.setText(duration: Time.pomodoro.rawValue)
+    case 1: circularProgressView.setText(duration: Time.shortBreak.rawValue)
+    case 2: circularProgressView.setText(duration: Time.longBreak.rawValue)
     default: fatalError("Index not found")
     }
   }
@@ -84,7 +111,7 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    circularProgressView = CircularProgressView()
+    circularProgressView = CircularProgressView(frame: .zero, timeText: timeText)
     addSubviews()
     configureUI()
     setUpConstraints()
@@ -94,9 +121,10 @@ class ViewController: UIViewController {
     view.addSubview(titleText)
     view.addSubview(ovalImageView)
     view.addSubview(circularProgressView)
-    buttonsView.layer.cornerRadius = 32.0
     view.addSubview(buttonsView)
     view.addSubview(configButton)
+    view.addSubview(timeText)
+    view.addSubview(startButton)
   }
   
   func configureUI() {
@@ -119,18 +147,17 @@ class ViewController: UIViewController {
       ovalImageView.centerXAnchor.constraint(equalTo: circularProgressView.centerXAnchor),
       
       configButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      configButton.topAnchor.constraint(equalTo: ovalImageView.bottomAnchor, constant: -64.0)
+      configButton.topAnchor.constraint(equalTo: ovalImageView.bottomAnchor, constant: -64.0),
+      
+      timeText.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      timeText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      
+      startButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      startButton.topAnchor.constraint(equalTo: timeText.bottomAnchor, constant: 8.0)
     ])
   }
   
   
 }
 
-extension UIView {
-   func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        let mask = CAShapeLayer()
-        mask.path = path.cgPath
-        layer.mask = mask
-    }
-}
+
