@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
   
   var circularProgressView: CircularProgressView!
+  private var buttonCount: Int = 0
   
   private lazy var titleText: UILabel = {
     let text = UILabel()
@@ -49,7 +50,7 @@ class ViewController: UIViewController {
     view.setTitleTextAttributes(titleTextAttributes, for: .normal)
     view.setTitleTextAttributes(highlitedTitleTextAttributes, for: .selected)
     
-    circularProgressView.setText(duration: Time.pomodoro.rawValue)
+    circularProgressView.setDuration(duration: Time.pomodoro.rawValue)
     
     view.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
     return view
@@ -74,28 +75,63 @@ class ViewController: UIViewController {
      ]
     )
     button.setAttributedTitle(attributedString, for: .normal)
-    button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+    button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
     return button
   }()
   
-  @objc func buttonPressed() {
-    switch buttonsView.selectedSegmentIndex {
-    case 0: circularProgressView.setDuration(duration: Time.pomodoro.rawValue)
-    case 1: circularProgressView.setDuration(duration: Time.shortBreak.rawValue)
-    case 2: circularProgressView.setDuration(duration: Time.longBreak.rawValue)
-    default: fatalError("Index not found")
+  @objc func buttonPressed(_ sender: UIButton) {
+        
+    self.buttonCount += 1
+    
+    checkButtonStatus()
+    
+  }
+  
+  func checkButtonStatus() {
+    if self.buttonCount == 1 {
+      print("clicou em start pela primeira vez")
+      setButtonTitle("pause")
+      circularProgressView.initTimer()
+    } else if buttonCount % 2 == 0 {
+      // pause
+      print("pausou")
+      circularProgressView.pauseTimer()
+      setButtonTitle("start")
+    } else {
+      // start
+      print("reiniciou")
+      circularProgressView.resumeTimer()
+      setButtonTitle("pause")
     }
   }
   
-  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
-    print("alo?")
-    
-    switch sender.selectedSegmentIndex {
-    case 0: circularProgressView.setText(duration: Time.pomodoro.rawValue)
-    case 1: circularProgressView.setText(duration: Time.shortBreak.rawValue)
-    case 2: circularProgressView.setText(duration: Time.longBreak.rawValue)
+  private func setButtonTitle(_ str: String) {
+    let attributedString = NSAttributedString(
+      string: str.uppercased(), attributes: [
+        NSAttributedString.Key.kern: 2.0,
+      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold),
+      NSAttributedString.Key.foregroundColor: UIColor.white
+     ]
+    )
+    startButton.setAttributedTitle(attributedString, for: .normal)
+  }
+  
+  func getDuration() -> TimeInterval {
+    var duration: TimeInterval
+    switch buttonsView.selectedSegmentIndex {
+    case 0: duration = Time.pomodoro.rawValue
+    case 1: duration = Time.shortBreak.rawValue
+    case 2: duration = Time.longBreak.rawValue
     default: fatalError("Index not found")
     }
+    return duration
+  }
+  
+  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
+    self.buttonCount = 0
+    checkButtonStatus()
+    circularProgressView.stopTimer()
+    circularProgressView.setDuration(duration: getDuration())
   }
   
   
@@ -111,7 +147,7 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    circularProgressView = CircularProgressView(frame: .zero, timeText: timeText)
+    circularProgressView = CircularProgressView(frame: .zero, timeText: timeText, startStopButton: startButton)
     addSubviews()
     configureUI()
     setUpConstraints()

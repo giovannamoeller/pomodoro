@@ -17,10 +17,16 @@ class CircularProgressView: UIView {
   private lazy var timer: Timer = Timer()
   
   private var timeText: UILabel?
+  private var startStopButton: UIButton?
+  
+  private var duration: TimeInterval = 0
+  
+  private var runCount = 0
 
-  init(frame: CGRect, timeText: UILabel) {
+  init(frame: CGRect, timeText: UILabel, startStopButton: UIButton) {
     super.init(frame: frame)
     self.timeText = timeText
+    self.startStopButton = startStopButton
     createCircularPath()
   }
   
@@ -55,16 +61,68 @@ class CircularProgressView: UIView {
     
   }
   
+  /*func setDuration(duration: TimeInterval) {
+    self.duration = duration
+    timer.invalidate()
+    let attributedString = NSAttributedString(
+      string: "pause".uppercased(), attributes: [
+        NSAttributedString.Key.kern: 2.0,
+      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold),
+      NSAttributedString.Key.foregroundColor: UIColor.white
+     ]
+    )
+    startStopButton?.setAttributedTitle(attributedString, for: .normal)
+    //progressAnimation()
+  }*/
+  
   func setDuration(duration: TimeInterval) {
-    print(duration)
-    progressAnimation(duration: duration)
+    timer.invalidate()
+    self.duration = duration
+    setText()
   }
   
-  func setText(duration: TimeInterval) {
-    timeText?.text = String(duration * 60)
+  func stopTimer() {
+    timer.invalidate()
   }
   
-  func progressAnimation(duration: TimeInterval) {
+  func pauseTimer() {
+    
+  }
+  
+  func resumeTimer() {
+    
+  }
+  
+  func initTimer() {
+    
+  }
+  
+  func setText() {
+    
+    //progressLayer.removeAnimation(forKey: "progressAnim")
+    
+    
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.minute, .second]
+    formatter.allowsFractionalUnits = true
+    
+    let formattedString = formatter.string(from: duration * 60)!
+    print(formattedString)
+    
+    timeText?.text = formattedString
+    
+  }
+  
+  /*func pause() {
+    print(runCount)
+    timer.invalidate()
+  }
+  
+  func resume() {
+    initTimer(duration: duration)
+  }*/
+  
+  func progressAnimation() {
     
     let circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
     
@@ -73,32 +131,26 @@ class CircularProgressView: UIView {
         
     let interval = duration
     
-    let formatter = DateComponentsFormatter()
-    formatter.allowedUnits = [.hour, .minute, .second]
-    formatter.unitsStyle = .full
-    
-    let formattedString = formatter.string(from: interval)!
-  
-    timer.invalidate()
     
     
     let durationInSeconds = duration * 60
     initTimer(duration: durationInSeconds)
     
     circularProgressAnimation.fillMode = .forwards
-    circularProgressAnimation.isRemovedOnCompletion = false
+    circularProgressAnimation.isRemovedOnCompletion = true
     progressLayer.add(circularProgressAnimation, forKey: "progressAnim")
   }
   
-  func initTimer(duration: TimeInterval) {
-    var runCount = 0
+  func initTimer(duration: TimeInterval, isResuming: Bool = false) {
+    
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-      runCount += 1
-      self.timeText?.text = String(duration - Double(runCount))
-      if runCount == Int(duration) {
+      self.runCount += 1
+      self.timeText?.text = String(duration - Double(self.runCount))
+      if self.runCount == Int(duration) {
         timer.invalidate()
       }
     }
+    
     timer.fire()
   }
   
