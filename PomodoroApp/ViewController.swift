@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     return imageView
   }()
   
-  private lazy var buttonsView: UISegmentedControl = {
+  private lazy var segmentedControlView: UISegmentedControl = {
     let view = UISegmentedControl()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.insertSegment(withTitle: "pomodoro", at: 0, animated: true)
@@ -41,8 +41,7 @@ class ViewController: UIViewController {
     
     //view.setBackgroundImage(UIImage(named: "Rectangle"), for: .normal, barMetrics: .default)
     
-    view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)
-    
+    view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     view.selectedSegmentTintColor = UIColor(named: "Color1")
     
     let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "ButtonTextColorDisabled")!.withAlphaComponent(0.4), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold)]
@@ -79,12 +78,26 @@ class ViewController: UIViewController {
     return button
   }()
   
-  @objc func buttonPressed(_ sender: UIButton) {
-        
-    self.buttonCount += 1
-    
+  private lazy var configurationButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setBackgroundImage(UIImage(systemName: "gearshape.fill"), for: .normal)
+    button.widthAnchor.constraint(equalToConstant: 32.0).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
+    button.tintColor = UIColor(named: "ButtonTextColorDisabled")?.withAlphaComponent(0.4)
+    return button
+  }()
+  
+  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
+    self.buttonCount = 0
     checkButtonStatus()
-    
+    circularProgressView.stopTimer()
+    circularProgressView.setDuration(duration: getDuration())
+  }
+  
+  @objc func buttonPressed(_ sender: UIButton) {
+    self.buttonCount += 1
+    checkButtonStatus()
   }
   
   func checkButtonStatus() {
@@ -95,7 +108,7 @@ class ViewController: UIViewController {
     } else if buttonCount % 2 == 0 {
       // pause
       print("pausou")
-      circularProgressView.pauseTimer()
+      circularProgressView.stopTimer()
       setButtonTitle("start")
     } else {
       // start
@@ -116,40 +129,21 @@ class ViewController: UIViewController {
     startButton.setAttributedTitle(attributedString, for: .normal)
   }
   
-  func getDuration() -> TimeInterval {
+  private func getDuration() -> TimeInterval {
     var duration: TimeInterval
-    switch buttonsView.selectedSegmentIndex {
-    case 0: duration = Time.pomodoro.rawValue
-    case 1: duration = Time.shortBreak.rawValue
-    case 2: duration = Time.longBreak.rawValue
-    default: fatalError("Index not found")
+    switch segmentedControlView.selectedSegmentIndex {
+      case 0: duration = Time.pomodoro.rawValue
+      case 1: duration = Time.shortBreak.rawValue
+      case 2: duration = Time.longBreak.rawValue
+      default: fatalError("Index not found")
     }
     return duration
   }
   
-  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
-    self.buttonCount = 0
-    checkButtonStatus()
-    circularProgressView.stopTimer()
-    circularProgressView.setDuration(duration: getDuration())
-  }
-  
-  
-  private lazy var configButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setBackgroundImage(UIImage(systemName: "gearshape.fill"), for: .normal)
-    button.widthAnchor.constraint(equalToConstant: 32.0).isActive = true
-    button.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
-    button.tintColor = UIColor(named: "ButtonTextColorDisabled")?.withAlphaComponent(0.4)
-    return button
-  }()
-  
   override func viewDidLoad() {
     super.viewDidLoad()
-    circularProgressView = CircularProgressView(frame: .zero, timeText: timeText, startStopButton: startButton)
-    addSubviews()
     configureUI()
+    addSubviews()
     setUpConstraints()
   }
   
@@ -157,14 +151,15 @@ class ViewController: UIViewController {
     view.addSubview(titleText)
     view.addSubview(ovalImageView)
     view.addSubview(circularProgressView)
-    view.addSubview(buttonsView)
-    view.addSubview(configButton)
+    view.addSubview(segmentedControlView)
+    view.addSubview(configurationButton)
     view.addSubview(timeText)
     view.addSubview(startButton)
   }
   
   func configureUI() {
     view.backgroundColor = UIColor(named: "BackgroundColor")
+    circularProgressView = CircularProgressView(frame: .zero, timeText: timeText, startStopButton: startButton)
   }
   
   func setUpConstraints() {
@@ -174,16 +169,16 @@ class ViewController: UIViewController {
       titleText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       titleText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32.0),
       
-      buttonsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-      buttonsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-      buttonsView.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 32.0),
-      buttonsView.heightAnchor.constraint(equalToConstant: 52),
+      segmentedControlView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+      segmentedControlView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
+      segmentedControlView.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 32.0),
+      segmentedControlView.heightAnchor.constraint(equalToConstant: 52),
       
       ovalImageView.centerYAnchor.constraint(equalTo: circularProgressView.centerYAnchor),
       ovalImageView.centerXAnchor.constraint(equalTo: circularProgressView.centerXAnchor),
       
-      configButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      configButton.topAnchor.constraint(equalTo: ovalImageView.bottomAnchor, constant: -64.0),
+      configurationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      configurationButton.topAnchor.constraint(equalTo: ovalImageView.bottomAnchor, constant: -64.0),
       
       timeText.centerYAnchor.constraint(equalTo: view.centerYAnchor),
       timeText.centerXAnchor.constraint(equalTo: view.centerXAnchor),

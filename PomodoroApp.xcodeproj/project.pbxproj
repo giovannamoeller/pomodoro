@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		488075A027A6624D00E5A997 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880759F27A6624D00E5A997 /* Button.swift */; };
+		488075A227A755EE00E5A997 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488075A127A755EE00E5A997 /* TimerManager.swift */; };
+		488075A427A75E0000E5A997 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488075A327A75E0000E5A997 /* String+Extension.swift */; };
 		48D7B68A27A4D3F200455593 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B68927A4D3F200455593 /* AppDelegate.swift */; };
 		48D7B68C27A4D3F200455593 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B68B27A4D3F200455593 /* SceneDelegate.swift */; };
 		48D7B68E27A4D3F200455593 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B68D27A4D3F200455593 /* ViewController.swift */; };
@@ -19,7 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4880759F27A6624D00E5A997 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		488075A127A755EE00E5A997 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		488075A327A75E0000E5A997 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		48D7B68627A4D3F200455593 /* PomodoroApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PomodoroApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48D7B68927A4D3F200455593 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48D7B68B27A4D3F200455593 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,8 +72,9 @@
 				48D7B69427A4D3F400455593 /* LaunchScreen.storyboard */,
 				48D7B69727A4D3F400455593 /* Info.plist */,
 				48D7B69D27A4FB5100455593 /* CircularProgressView.swift */,
+				488075A127A755EE00E5A997 /* TimerManager.swift */,
 				48D7B6A127A5F28100455593 /* Time.swift */,
-				4880759F27A6624D00E5A997 /* Button.swift */,
+				488075A327A75E0000E5A997 /* String+Extension.swift */,
 			);
 			path = PomodoroApp;
 			sourceTree = "<group>";
@@ -147,11 +150,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				488075A427A75E0000E5A997 /* String+Extension.swift in Sources */,
 				48D7B6A227A5F28100455593 /* Time.swift in Sources */,
-				488075A027A6624D00E5A997 /* Button.swift in Sources */,
 				48D7B68E27A4D3F200455593 /* ViewController.swift in Sources */,
 				48D7B68A27A4D3F200455593 /* AppDelegate.swift in Sources */,
 				48D7B69E27A4FB5100455593 /* CircularProgressView.swift in Sources */,
+				488075A227A755EE00E5A997 /* TimerManager.swift in Sources */,
 				48D7B68C27A4D3F200455593 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
