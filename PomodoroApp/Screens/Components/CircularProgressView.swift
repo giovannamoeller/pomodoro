@@ -9,13 +9,12 @@ import UIKit
 
 class CircularProgressView: UIView {
   
-  private var bigCircleLayer = CAShapeLayer()
-  private var circleLayer = CAShapeLayer()
-  private var progressLayer = CAShapeLayer()
+  private var backgroundCircleLayer = CAShapeLayer()
+  private var timeProgressLayer = CAShapeLayer()
   private var startPoint = CGFloat(-Double.pi / 2)
   private var endPoint = CGFloat(3 * Double.pi / 2)
   
-  private var timeText: UILabel?
+  private var timeText = TimeTextView()
   private var startStopButton: UIButton?
   
   private var timerManager: TimerManager?
@@ -24,46 +23,51 @@ class CircularProgressView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    //addSubview(ovalImageView)
-    addSubview(ovalImageView)
     translatesAutoresizingMaskIntoConstraints = false
+    addSubviews()
     setUpConstraints()
-    createCircularPath()
+    createBackgroundCircleLayer()
+    createTimeProgressLayer()
+    bringSubviewToFront(timeText)
   }
   
-  func updateView(timeText: UILabel, startStopButton: UIButton, timerManager: TimerManager) {
+  func addSubviews() {
+    addSubview(ovalImageView)
+    addSubview(timeText)
+    timeText.text = "25:00"
+  }
+  
+  /*func updateView(timeText: UILabel, startStopButton: UIButton, timerManager: TimerManager) {
     self.timeText = timeText
     self.startStopButton = startStopButton
     self.timerManager = timerManager
-  }
+  }*/
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func createCircularPath() {
-    
+  func createBackgroundCircleLayer() {
     let circularPath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width, y: frame.size.height), radius: 130, startAngle: startPoint, endAngle: endPoint, clockwise: true)
-    
-    circleLayer.path = circularPath.cgPath
-    circleLayer.fillColor = UIColor(named: "DarkBackgroundColor")?.cgColor
-    circleLayer.lineCap = .round
-    circleLayer.strokeEnd = 1.0
-    circleLayer.strokeColor = UIColor.clear.cgColor
-    
-    layer.addSublayer(circleLayer)
-    
-    let pathProgressLayer = UIBezierPath(arcCenter: CGPoint(x: frame.size.width, y: frame.size.height), radius: 110, startAngle: startPoint, endAngle: endPoint, clockwise: true)
-    progressLayer.path = pathProgressLayer.cgPath
-    progressLayer.fillColor = UIColor.clear.cgColor
-    progressLayer.lineCap = .round
-    progressLayer.lineWidth = 10.0
-    progressLayer.strokeEnd = 0
-    progressLayer.strokeColor = UIColor(named: "Color1")?.cgColor
-    
-    layer.addSublayer(progressLayer)
+    backgroundCircleLayer.path = circularPath.cgPath
+    backgroundCircleLayer.fillColor = UIColor(named: "DarkBackgroundColor")?.cgColor
+    backgroundCircleLayer.lineCap = .round
+    backgroundCircleLayer.strokeEnd = 1.0
+    backgroundCircleLayer.strokeColor = UIColor.clear.cgColor
+    layer.addSublayer(backgroundCircleLayer)
   }
   
+  func createTimeProgressLayer() {
+    let progressPath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width, y: frame.size.height), radius: 110, startAngle: startPoint, endAngle: endPoint, clockwise: true)
+    timeProgressLayer.path = progressPath.cgPath
+    timeProgressLayer.fillColor = UIColor.clear.cgColor
+    timeProgressLayer.lineCap = .round
+    timeProgressLayer.lineWidth = 10.0
+    timeProgressLayer.strokeEnd = 0
+    timeProgressLayer.strokeColor = UIColor(named: "Color1")?.cgColor
+    layer.addSublayer(timeProgressLayer)
+  }
+
   private lazy var ovalImageView: UIImageView = {
     let imageView = UIImageView(image: UIImage(named: "oval"))
     imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,6 +82,9 @@ class CircularProgressView: UIView {
     NSLayoutConstraint.activate([
       ovalImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
       ovalImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      
+      timeText.centerXAnchor.constraint(equalTo: centerXAnchor),
+      timeText.centerYAnchor.constraint(equalTo: centerYAnchor),
     ])
   }
   
@@ -89,7 +96,7 @@ class CircularProgressView: UIView {
   
   func stopTimer() {
     timer.invalidate()
-    progressLayer.removeAnimation(forKey: "progressAnim")
+    timeProgressLayer.removeAnimation(forKey: "progressAnim")
   }
   
   func resumeTimer() {
@@ -112,14 +119,14 @@ class CircularProgressView: UIView {
       self.timeText?.text = String().formatToMinute(from: (self.duration * 60) - Double(self.runCount))
       if self.runCount == Int(self.duration * 60) {
         self.stopTimer()
-        self.progressLayer.removeAnimation(forKey: "progressAnim")
+        self.timeProgressLayer.removeAnimation(forKey: "progressAnim")
       }
     }
     timer.fire()
   }*/
   
   func setText() {
-    timeText?.text = String().formatToMinute(from: timerManager?.duration ?? 0 * 60)
+    timeText.text = String().formatToMinute(from: timerManager?.duration ?? 0 * 60)
   }
   
   func progressAnimation() {
@@ -129,7 +136,7 @@ class CircularProgressView: UIView {
     circularProgressAnimation.fillMode = .forwards
     circularProgressAnimation.isRemovedOnCompletion = false
     circularProgressAnimation.timeOffset = 0.0
-    progressLayer.add(circularProgressAnimation, forKey: "progressAnim")
+    timeProgressLayer.add(circularProgressAnimation, forKey: "progressAnim")
   }
   
   func pauseProgress() {

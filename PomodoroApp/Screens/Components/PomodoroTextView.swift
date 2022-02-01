@@ -1,5 +1,5 @@
 //
-//  TimeTextView.swift
+//  PomodoroTextView.swift
 //  PomodoroApp
 //
 //  Created by Giovanna Moeller on 01/02/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TimeTextView: UILabel {
+class PomodoroTextView: UILabel {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -21,7 +21,7 @@ class TimeTextView: UILabel {
   func configureUI() {
     translatesAutoresizingMaskIntoConstraints = false
     textColor = .white
-    font = .systemFont(ofSize: 48.0, weight: .heavy)
+    text = "pomodoro"
+    font = .systemFont(ofSize: 24.0, weight: .bold)
   }
-  
 }

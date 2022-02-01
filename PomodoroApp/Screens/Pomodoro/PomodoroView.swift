@@ -9,18 +9,10 @@ import UIKit
 
 class PomodoroView: UIView {
   
-  private lazy var titleText: UILabel = {
-    let text = UILabel()
-    text.translatesAutoresizingMaskIntoConstraints = false
-    text.textColor = .white
-    text.text = "pomodoro"
-    text.font = .systemFont(ofSize: 24.0, weight: .bold)
-    return text
-  }()
-  
+  private lazy var pomodoroTitleTextView = PomodoroTextView()
   private lazy var optionsView = OptionsView(frame: .zero)
   private lazy var circularProgressView = CircularProgressView()
-  private lazy var configurationButton = ConfigurationButtonView()
+  private lazy var configurationButtonView = ConfigurationButtonView()
   
   private var timerManager = TimerManager()
   
@@ -36,12 +28,10 @@ class PomodoroView: UIView {
   }
   
   func addSubviews() {
-    addSubview(titleText)
+    addSubview(pomodoroTitleTextView)
     addSubview(optionsView)
     addSubview(circularProgressView)
-    addSubview(configurationButton)
-    //addSubview(timeText)
-    //addSubview(startButton)
+    addSubview(configurationButtonView)
   }
   
   func configureUI() {
@@ -50,21 +40,19 @@ class PomodoroView: UIView {
   
   func setUpConstraints() {
     NSLayoutConstraint.activate([
-      
-      titleText.centerXAnchor.constraint(equalTo: centerXAnchor),
-      titleText.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32.0),
+      pomodoroTitleTextView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      pomodoroTitleTextView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32.0),
       
       optionsView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0),
       optionsView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0),
-      optionsView.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 32.0),
-      optionsView.heightAnchor.constraint(equalToConstant: 64),
+      optionsView.topAnchor.constraint(equalTo: pomodoroTitleTextView.bottomAnchor, constant: 32.0),
+      optionsView.heightAnchor.constraint(equalToConstant: 52),
       
       circularProgressView.centerXAnchor.constraint(equalTo: centerXAnchor),
       circularProgressView.centerYAnchor.constraint(equalTo: centerYAnchor),
       
-      configurationButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-      configurationButton.topAnchor.constraint(equalTo: circularProgressView.bottomAnchor, constant: 256),
-      
+      configurationButtonView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      configurationButtonView.topAnchor.constraint(equalTo: circularProgressView.bottomAnchor, constant: 256),
     ])
   }
   
