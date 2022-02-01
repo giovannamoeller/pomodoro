@@ -102,17 +102,14 @@ class ViewController: UIViewController {
   
   func checkButtonStatus() {
     if self.buttonCount == 1 {
-      print("clicou em start pela primeira vez")
       setButtonTitle("pause")
       circularProgressView.initTimer()
     } else if buttonCount % 2 == 0 {
       // pause
-      print("pausou")
-      circularProgressView.stopTimer()
+      circularProgressView.pauseTimer()
       setButtonTitle("start")
     } else {
       // start
-      print("reiniciou")
       circularProgressView.resumeTimer()
       setButtonTitle("pause")
     }
