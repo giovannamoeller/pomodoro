@@ -18,17 +18,23 @@ class CircularProgressView: UIView {
   private var timeText: UILabel?
   private var startStopButton: UIButton?
   
-  private var timer: Timer = Timer()
-  private var duration: TimeInterval = 0
-  private var runCount = 0
+  private var timerManager: TimerManager?
   
   private var circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
   
-  init(frame: CGRect, timeText: UILabel, startStopButton: UIButton) {
+  override init(frame: CGRect) {
     super.init(frame: frame)
+    //addSubview(ovalImageView)
+    addSubview(ovalImageView)
+    translatesAutoresizingMaskIntoConstraints = false
+    setUpConstraints()
+    createCircularPath()
+  }
+  
+  func updateView(timeText: UILabel, startStopButton: UIButton, timerManager: TimerManager) {
     self.timeText = timeText
     self.startStopButton = startStopButton
-    createCircularPath()
+    self.timerManager = timerManager
   }
   
   required init?(coder: NSCoder) {
@@ -58,7 +64,24 @@ class CircularProgressView: UIView {
     layer.addSublayer(progressLayer)
   }
   
-  func setDuration(duration: TimeInterval) {
+  private lazy var ovalImageView: UIImageView = {
+    let imageView = UIImageView(image: UIImage(named: "oval"))
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.layer.shadowColor = UIColor(named: "ShadowColor")?.cgColor
+    imageView.layer.shadowOpacity = 1
+    imageView.layer.shadowOffset = .init(width: -20, height: -20)
+    imageView.layer.shadowRadius = 40
+    return imageView
+  }()
+  
+  func setUpConstraints() {
+    NSLayoutConstraint.activate([
+      ovalImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+      ovalImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+    ])
+  }
+  
+  /*func setDuration(duration: TimeInterval) {
     timer.invalidate()
     self.duration = duration
     setText()
@@ -93,14 +116,14 @@ class CircularProgressView: UIView {
       }
     }
     timer.fire()
-  }
+  }*/
   
   func setText() {
-    timeText?.text = String().formatToMinute(from: duration * 60)
+    timeText?.text = String().formatToMinute(from: timerManager?.duration ?? 0 * 60)
   }
   
   func progressAnimation() {
-    circularProgressAnimation.duration = duration * 60
+    circularProgressAnimation.duration = timerManager?.duration ?? 0 * 60
     circularProgressAnimation.toValue = 1.0
     circularProgressAnimation.speed = 1.0
     circularProgressAnimation.fillMode = .forwards
