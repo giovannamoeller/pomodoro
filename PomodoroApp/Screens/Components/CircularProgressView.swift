@@ -14,10 +14,9 @@ class CircularProgressView: UIView {
   private var timeProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
   private var startPoint = CGFloat(-Double.pi / 2)
   private var endPoint = CGFloat(3 * Double.pi / 2)
+  private var duration = TimeInterval()
   
-  lazy var timeText = TimeTextView()
-  
-  private var timerManager: TimerManager?
+  var timeText = TimeTextView()
   
   private lazy var ovalImageView: UIImageView = {
     let imageView = UIImageView(image: UIImage(named: "oval"))
@@ -31,18 +30,22 @@ class CircularProgressView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    translatesAutoresizingMaskIntoConstraints = false
-    addSubviews()
-    setUpConstraints()
-    createBackgroundCircleLayer()
-    createTimeProgressLayer()
-    bringSubviewToFront(timeText)
+    configureUI()
   }
   
-  func setTimerManager(timerManager: TimerManager) {
-    self.timerManager = timerManager
-    print(self.timerManager?.duration)
-    setText()
+  func setText(duration: TimeInterval) {
+    print("it got here with duration: \(duration)")
+    timeText.text = String().formatToMinute(from: duration)
+  }
+  
+  
+  func configureUI() {
+    translatesAutoresizingMaskIntoConstraints = false
+    addSubviews()
+    createBackgroundCircleLayer()
+    createTimeProgressLayer()
+    setUpConstraints()
+    bringSubviewToFront(timeText)
   }
   
   func addSubviews() {
@@ -75,7 +78,6 @@ class CircularProgressView: UIView {
     layer.addSublayer(timeProgressLayer)
   }
 
-  
   func setUpConstraints() {
     NSLayoutConstraint.activate([
       ovalImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -124,12 +126,12 @@ class CircularProgressView: UIView {
     timer.fire()
   }*/
   
-  func setText() {
-    timeText.text = String().formatToMinute(from: timerManager?.duration ?? 0 * 60)
+  func setDuration(duration: TimeInterval) {
+    self.duration = duration
   }
   
   func progressAnimation() {
-    timeProgressAnimation.duration = timerManager?.duration ?? 0 * 60
+    timeProgressAnimation.duration = duration * 60
     timeProgressAnimation.toValue = 1.0
     timeProgressAnimation.speed = 1.0
     timeProgressAnimation.fillMode = .forwards

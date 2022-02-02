@@ -7,10 +7,18 @@
 
 import Foundation
 
+protocol TimerManagerDelegate {
+  func setText(duration: TimeInterval)
+}
+
 class TimerManager {
+  
+  var delegate: TimerManagerDelegate?
+  
   var timer: Timer = Timer()
   var runCount = 0
   var duration: TimeInterval = 0
+  var timeText: String = ""
   
   func getDuration(index: Int) -> TimeInterval {
     var duration: TimeInterval
@@ -51,7 +59,7 @@ class TimerManager {
     //resumeProgress()
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
       self.runCount += 1
-      //self.timeText?.text = String().formatToMinute(from: (self.duration * 60) - Double(self.runCount))
+      self.delegate?.setText(duration: (self.duration * 60) - Double(self.runCount))
       if self.runCount == Int(self.duration * 60) {
         self.stopTimer()
       }

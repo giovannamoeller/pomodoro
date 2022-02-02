@@ -17,7 +17,11 @@ protocol StartStopButtonProtocol {
   func checkButtonStatus()
 }
 
-class PomodoroView: UIView {
+class PomodoroView: UIView, TimerManagerDelegate {
+  
+  func setText(duration: TimeInterval) {
+    circularProgressView.setText(duration: duration)
+  }
   
   private lazy var pomodoroTitleTextView = PomodoroTextView()
   private lazy var optionsView = OptionsView(frame: .zero)
@@ -30,6 +34,7 @@ class PomodoroView: UIView {
     
   override init(frame: CGRect) {
     super.init(frame: frame)
+    timerManager.delegate = self
     configureUI()
     addSubviews()
     setUpConstraints()
@@ -41,10 +46,17 @@ class PomodoroView: UIView {
   
   func addSubviews() {
     addSubview(pomodoroTitleTextView)
+    
     addSubview(optionsView)
     optionsView.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
+    
+    circularProgressView.setDuration(duration: timerManager.duration * 60)
+        
     initSegmentedControl()
+    
     addSubview(circularProgressView)
+    
+    //circularProgressView.setText(duration: timerManager.duration)
     addSubview(startStopButton)
     startStopButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
     addSubview(configurationButtonView)
@@ -78,9 +90,9 @@ class PomodoroView: UIView {
 }
 
 extension PomodoroView: SegmentedControlProtocol {
-  
   func initSegmentedControl() {
     self.timerManager.setDuration(duration: Time.pomodoro.rawValue)
+    circularProgressView.setText(duration: timerManager.duration * 60)
   }
   
   @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
@@ -88,6 +100,7 @@ extension PomodoroView: SegmentedControlProtocol {
     checkButtonStatus()
     self.timerManager.stopTimer()
     self.timerManager.setDuration(duration: timerManager.getDuration(index: sender.selectedSegmentIndex))
+    circularProgressView.setText(duration: timerManager.duration * 60)
   }
   
 }
@@ -102,6 +115,7 @@ extension PomodoroView: StartStopButtonProtocol {
     switch buttonCount {
     case 1:
       timerManager.initTimer()
+      //circularProgressView.setText(duration: (timerManager.duration * 60) - Double(timerManager.runCount))
       startStopButton.setButtonTitle(.pause)
     case let x where x % 2 == 0:
       // pause
@@ -110,6 +124,7 @@ extension PomodoroView: StartStopButtonProtocol {
     case let x where x % 2 != 0:
       // start
       timerManager.resumeTimer()
+      //circularProgressView.setText(duration: (timerManager.duration * 60) - Double(timerManager.runCount))
       startStopButton.setButtonTitle(.pause)
     default: fatalError("index not found")
     }
