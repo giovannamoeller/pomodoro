@@ -59,6 +59,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		487119D627AA263F0015175F /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		48D7B67D27A4D3F200455593 = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +109,7 @@
 		48DF7C4327A96A5B0048DE7B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				487119D627AA263F0015175F /* Configuration */,
 				48DF7C4C27A96E420048DE7B /* Components */,
 				48DF7C4627A96ACA0048DE7B /* Pomodoro */,
 			);

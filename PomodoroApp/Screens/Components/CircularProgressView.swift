@@ -36,6 +36,10 @@ class CircularProgressView: UIView {
     timeText.text = String().formatToMinute(from: duration)
   }
   
+  func changeProgressColor(color: UIColor) {
+    timeProgressLayer.strokeColor = color.cgColor
+  }
+  
   func configureUI() {
     translatesAutoresizingMaskIntoConstraints = false
     addSubviews()

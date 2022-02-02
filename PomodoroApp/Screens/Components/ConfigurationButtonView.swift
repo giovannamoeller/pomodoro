@@ -25,11 +25,6 @@ class ConfigurationButtonView: UIButton {
       widthAnchor.constraint(equalToConstant: 32.0),
       heightAnchor.constraint(equalToConstant: 32.0)
     ])
-    addTarget(self, action: #selector(configurationButtonPressed), for: .touchUpInside)
-  }
-  
-  @objc func configurationButtonPressed() {
-    print("config")
   }
   
 }

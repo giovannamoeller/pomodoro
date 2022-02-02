@@ -17,6 +17,10 @@ protocol StartStopButtonProtocol {
   func checkButtonStatus()
 }
 
+protocol ConfigurationButtonProtocol {
+  func configurationButtonPressed(_ sender: UIButton)
+}
+
 class PomodoroView: UIView, TimerManagerDelegate {
   
   func setText(duration: TimeInterval) {
@@ -53,6 +57,7 @@ class PomodoroView: UIView, TimerManagerDelegate {
     addSubview(startStopButton)
     startStopButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
     addSubview(configurationButtonView)
+    configurationButtonView.addTarget(self, action: #selector(configurationButtonPressed(_:)), for: .touchUpInside)
   }
   
   func configureUI() {
@@ -125,3 +130,9 @@ extension PomodoroView: StartStopButtonProtocol {
   }
 }
 
+extension PomodoroView: ConfigurationButtonProtocol {
+  @objc func configurationButtonPressed(_ sender: UIButton) {
+    optionsView.selectedSegmentTintColor = UIColor(named: "Color2")
+    circularProgressView.changeProgressColor(color: UIColor(named: "Color2") ?? .clear)
+  }
+}
