@@ -12,6 +12,11 @@ protocol SegmentedControlProtocol {
   func segmentedControlChanged(_ sender: UISegmentedControl)
 }
 
+protocol StartStopButtonProtocol {
+  func buttonPressed(_ sender: UIButton)
+  func checkButtonStatus()
+}
+
 class PomodoroView: UIView {
   
   private lazy var pomodoroTitleTextView = PomodoroTextView()
@@ -20,6 +25,7 @@ class PomodoroView: UIView {
   private lazy var configurationButtonView = ConfigurationButtonView()
   private lazy var startStopButton = StartStopButtonView()
   
+  private lazy var buttonCount = 0
   var timerManager = TimerManager()
     
   override init(frame: CGRect) {
@@ -40,6 +46,7 @@ class PomodoroView: UIView {
     initSegmentedControl()
     addSubview(circularProgressView)
     addSubview(startStopButton)
+    startStopButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
     addSubview(configurationButtonView)
   }
   
@@ -77,10 +84,35 @@ extension PomodoroView: SegmentedControlProtocol {
   }
   
   @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
-    //self.buttonCount = 0
-    //checkButtonStatus()
+    self.buttonCount = 0
+    checkButtonStatus()
     self.timerManager.stopTimer()
     self.timerManager.setDuration(duration: timerManager.getDuration(index: sender.selectedSegmentIndex))
   }
   
 }
+
+extension PomodoroView: StartStopButtonProtocol {
+  @objc func buttonPressed(_ sender: UIButton) {
+    buttonCount += 1
+    checkButtonStatus()
+  }
+  
+  func checkButtonStatus() {
+    switch buttonCount {
+    case 1:
+      timerManager.initTimer()
+      startStopButton.setButtonTitle(.pause)
+    case let x where x % 2 == 0:
+      // pause
+      timerManager.pauseTimer()
+      startStopButton.setButtonTitle(.start)
+    case let x where x % 2 != 0:
+      // start
+      timerManager.resumeTimer()
+      startStopButton.setButtonTitle(.pause)
+    default: fatalError("index not found")
+    }
+  }
+}
+
