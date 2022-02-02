@@ -11,15 +11,23 @@ class CircularProgressView: UIView {
   
   private var backgroundCircleLayer = CAShapeLayer()
   private var timeProgressLayer = CAShapeLayer()
+  private var timeProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
   private var startPoint = CGFloat(-Double.pi / 2)
   private var endPoint = CGFloat(3 * Double.pi / 2)
   
-  private var timeText = TimeTextView()
-  private var startStopButton: UIButton?
+  lazy var timeText = TimeTextView()
   
   private var timerManager: TimerManager?
   
-  private var circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
+  private lazy var ovalImageView: UIImageView = {
+    let imageView = UIImageView(image: UIImage(named: "oval"))
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.layer.shadowColor = UIColor(named: "ShadowColor")?.cgColor
+    imageView.layer.shadowOpacity = 1
+    imageView.layer.shadowOffset = .init(width: -20, height: -20)
+    imageView.layer.shadowRadius = 40
+    return imageView
+  }()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -31,17 +39,16 @@ class CircularProgressView: UIView {
     bringSubviewToFront(timeText)
   }
   
+  func setTimerManager(timerManager: TimerManager) {
+    self.timerManager = timerManager
+    print(self.timerManager?.duration)
+    setText()
+  }
+  
   func addSubviews() {
     addSubview(ovalImageView)
     addSubview(timeText)
-    timeText.text = "25:00"
   }
-  
-  /*func updateView(timeText: UILabel, startStopButton: UIButton, timerManager: TimerManager) {
-    self.timeText = timeText
-    self.startStopButton = startStopButton
-    self.timerManager = timerManager
-  }*/
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -68,15 +75,6 @@ class CircularProgressView: UIView {
     layer.addSublayer(timeProgressLayer)
   }
 
-  private lazy var ovalImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "oval"))
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.layer.shadowColor = UIColor(named: "ShadowColor")?.cgColor
-    imageView.layer.shadowOpacity = 1
-    imageView.layer.shadowOffset = .init(width: -20, height: -20)
-    imageView.layer.shadowRadius = 40
-    return imageView
-  }()
   
   func setUpConstraints() {
     NSLayoutConstraint.activate([
@@ -85,6 +83,7 @@ class CircularProgressView: UIView {
       
       timeText.centerXAnchor.constraint(equalTo: centerXAnchor),
       timeText.centerYAnchor.constraint(equalTo: centerYAnchor),
+      
     ])
   }
   
@@ -130,13 +129,13 @@ class CircularProgressView: UIView {
   }
   
   func progressAnimation() {
-    circularProgressAnimation.duration = timerManager?.duration ?? 0 * 60
-    circularProgressAnimation.toValue = 1.0
-    circularProgressAnimation.speed = 1.0
-    circularProgressAnimation.fillMode = .forwards
-    circularProgressAnimation.isRemovedOnCompletion = false
-    circularProgressAnimation.timeOffset = 0.0
-    timeProgressLayer.add(circularProgressAnimation, forKey: "progressAnim")
+    timeProgressAnimation.duration = timerManager?.duration ?? 0 * 60
+    timeProgressAnimation.toValue = 1.0
+    timeProgressAnimation.speed = 1.0
+    timeProgressAnimation.fillMode = .forwards
+    timeProgressAnimation.isRemovedOnCompletion = false
+    timeProgressAnimation.timeOffset = 0.0
+    timeProgressLayer.add(timeProgressAnimation, forKey: "progressAnim")
   }
   
   func pauseProgress() {

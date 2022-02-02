@@ -8,10 +8,7 @@
 import UIKit
 
 class OptionsView: UISegmentedControl {
-  
-  private var buttonCount = 0
-  private var timerManager: TimerManager?
-  
+    
   override init(frame: CGRect) {
     super.init(frame: frame)
     configureUI()
@@ -34,18 +31,6 @@ class OptionsView: UISegmentedControl {
     let highlitedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "HighlightedButtonColor")!, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold)]
     setTitleTextAttributes(titleTextAttributes, for: .normal)
     setTitleTextAttributes(highlitedTitleTextAttributes, for: .selected)
-    timerManager?.setDuration(duration: Time.pomodoro.rawValue)
-    addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
   }
   
-  @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
-    self.buttonCount = 0
-    //checkButtonStatus()
-    timerManager?.stopTimer()
-    timerManager?.setDuration(duration: timerManager?.getDuration(index: selectedSegmentIndex) ?? 0)
-  }
-  
-  func setUpTimerManager(timerManager: TimerManager) {
-    self.timerManager = timerManager
-  }
 }

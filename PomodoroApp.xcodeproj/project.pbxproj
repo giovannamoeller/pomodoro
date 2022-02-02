@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		487119D327A9BBD70015175F /* PomodoroTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487119D227A9BBD70015175F /* PomodoroTextView.swift */; };
+		487119D527A9E3ED0015175F /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487119D427A9E3ED0015175F /* Button.swift */; };
 		488075A227A755EE00E5A997 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488075A127A755EE00E5A997 /* TimerManager.swift */; };
 		488075A427A75E0000E5A997 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488075A327A75E0000E5A997 /* String+Extensions.swift */; };
 		48D7B68A27A4D3F200455593 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B68927A4D3F200455593 /* AppDelegate.swift */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		487119D227A9BBD70015175F /* PomodoroTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTextView.swift; sourceTree = "<group>"; };
+		487119D427A9E3ED0015175F /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		488075A127A755EE00E5A997 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		488075A327A75E0000E5A997 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		48D7B68627A4D3F200455593 /* PomodoroApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PomodoroApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +121,7 @@
 			children = (
 				488075A127A755EE00E5A997 /* TimerManager.swift */,
 				48D7B6A127A5F28100455593 /* Time.swift */,
+				487119D427A9E3ED0015175F /* Button.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				48DF7C4E27A96E5C0048DE7B /* OptionsView.swift in Sources */,
 				48D7B68A27A4D3F200455593 /* AppDelegate.swift in Sources */,
 				48D7B69E27A4FB5100455593 /* CircularProgressView.swift in Sources */,
+				487119D527A9E3ED0015175F /* Button.swift in Sources */,
 				487119D327A9BBD70015175F /* PomodoroTextView.swift in Sources */,
 				48DF7C4827A96ADD0048DE7B /* PomodoroViewController.swift in Sources */,
 				48DF7C5627A9A5FD0048DE7B /* ConfigurationButtonView.swift in Sources */,
