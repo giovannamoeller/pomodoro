@@ -15,7 +15,6 @@ class CircularProgressView: UIView {
   private var startPoint = CGFloat(-Double.pi / 2)
   private var endPoint = CGFloat(3 * Double.pi / 2)
   private var duration = TimeInterval()
-  
   var timeText = TimeTextView()
   
   private lazy var ovalImageView: UIImageView = {
@@ -34,10 +33,8 @@ class CircularProgressView: UIView {
   }
   
   func setText(duration: TimeInterval) {
-    print("it got here with duration: \(duration)")
     timeText.text = String().formatToMinute(from: duration)
   }
-  
   
   func configureUI() {
     translatesAutoresizingMaskIntoConstraints = false
@@ -89,49 +86,13 @@ class CircularProgressView: UIView {
     ])
   }
   
-  /*func setDuration(duration: TimeInterval) {
-    timer.invalidate()
-    self.duration = duration
-    setText()
-  }
-  
-  func stopTimer() {
-    timer.invalidate()
-    timeProgressLayer.removeAnimation(forKey: "progressAnim")
-  }
-  
-  func resumeTimer() {
-    initTimer(isRepeating: true)
-  }
-  
-  func pauseTimer() {
-    timer.invalidate()
-    pauseProgress()
-  }
-  
-  func initTimer(isRepeating: Bool = false) {
-    if !isRepeating {
-      runCount = 0
-      progressAnimation()
-    }
-    resumeProgress()
-    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-      self.runCount += 1
-      self.timeText?.text = String().formatToMinute(from: (self.duration * 60) - Double(self.runCount))
-      if self.runCount == Int(self.duration * 60) {
-        self.stopTimer()
-        self.timeProgressLayer.removeAnimation(forKey: "progressAnim")
-      }
-    }
-    timer.fire()
-  }*/
-  
   func setDuration(duration: TimeInterval) {
     self.duration = duration
+    self.setText(duration: duration)
   }
   
   func progressAnimation() {
-    timeProgressAnimation.duration = duration * 60
+    timeProgressAnimation.duration = duration
     timeProgressAnimation.toValue = 1.0
     timeProgressAnimation.speed = 1.0
     timeProgressAnimation.fillMode = .forwards
@@ -153,5 +114,9 @@ class CircularProgressView: UIView {
     layer.beginTime = 0.0
     let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
     layer.beginTime = timeSincePause
+  }
+  
+  func stopAnimation() {
+    timeProgressLayer.removeAnimation(forKey: "progressAnim")
   }
 }
