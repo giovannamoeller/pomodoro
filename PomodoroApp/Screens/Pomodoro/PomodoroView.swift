@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ViewControllerDelegate {
+  func presentConfigurationView()
+}
+
 protocol SegmentedControlProtocol {
   func initSegmentedControl()
   func segmentedControlChanged(_ sender: UISegmentedControl)
@@ -21,7 +25,14 @@ protocol ConfigurationButtonProtocol {
   func configurationButtonPressed(_ sender: UIButton)
 }
 
-class PomodoroView: UIView, TimerManagerDelegate {
+
+class PomodoroView: UIView, TimerManagerDelegate, ColorManagerDelegate {
+  
+  func changeColor(color: UIColor) {
+    optionsView.selectedSegmentTintColor = color
+    circularProgressView.stopAnimation()
+    circularProgressView.changeProgressColor(color: color)
+  }
   
   func setText(duration: TimeInterval) {
     circularProgressView.setText(duration: duration)
@@ -34,11 +45,14 @@ class PomodoroView: UIView, TimerManagerDelegate {
   private lazy var startStopButton = StartStopButtonView()
   
   private lazy var buttonCount = 0
+  
   var timerManager = TimerManager()
-    
+  var colorManager = ColorManager()
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     timerManager.delegate = self
+    colorManager.delegate = self
     configureUI()
     addSubviews()
     setUpConstraints()
@@ -62,6 +76,8 @@ class PomodoroView: UIView, TimerManagerDelegate {
   
   func configureUI() {
     backgroundColor = UIColor(named: "BackgroundColor")
+    optionsView.selectedSegmentTintColor = ColorManager.actualColor
+    circularProgressView.changeProgressColor(color: ColorManager.actualColor)
   }
   
   func setUpConstraints() {
@@ -101,7 +117,6 @@ extension PomodoroView: SegmentedControlProtocol {
     self.timerManager.setDuration(duration: timerManager.getDuration(index: sender.selectedSegmentIndex))
     circularProgressView.setDuration(duration: timerManager.duration * 60)
   }
-  
 }
 
 extension PomodoroView: StartStopButtonProtocol {
@@ -132,7 +147,8 @@ extension PomodoroView: StartStopButtonProtocol {
 
 extension PomodoroView: ConfigurationButtonProtocol {
   @objc func configurationButtonPressed(_ sender: UIButton) {
-    optionsView.selectedSegmentTintColor = UIColor(named: "Color2")
-    circularProgressView.changeProgressColor(color: UIColor(named: "Color2") ?? .clear)
+    let vc = ConfigurationViewController()
+    vc.colorManager = colorManager
+    self.findViewController()?.present(vc, animated: true, completion: nil)
   }
 }

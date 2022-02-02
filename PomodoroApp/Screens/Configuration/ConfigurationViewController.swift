@@ -9,8 +9,10 @@ import UIKit
 
 class ConfigurationViewController: UIViewController {
   
+  var colorManager: ColorManager?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    view = ConfigurationView()
+    view = ConfigurationView(frame: .zero, colorManager: colorManager ?? .init())
   }
 }
