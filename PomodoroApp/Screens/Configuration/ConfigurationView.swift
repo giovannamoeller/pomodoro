@@ -132,7 +132,6 @@ class ConfigurationView: UIView {
   
   @objc func buttonPressed(_ sender: UIButton) {
     if let identifier = sender.restorationIdentifier {
-      print(identifier)
       switch identifier {
       case "color1": colorManager?.changeColor(color: .init(named: "Color1") ?? .clear)
       case "color2": colorManager?.changeColor(color: .init(named: "Color2") ?? .clear)

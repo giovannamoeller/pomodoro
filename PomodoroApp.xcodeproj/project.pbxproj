@@ -67,6 +67,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4802D61C27AC00C900477E32 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				48D7B6A127A5F28100455593 /* Time.swift */,
+				487119D427A9E3ED0015175F /* Button.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		487119D627AA263F0015175F /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,7 +104,8 @@
 		48D7B68827A4D3F200455593 /* PomodoroApp */ = {
 			isa = PBXGroup;
 			children = (
-				48DF7C4527A96A760048DE7B /* Manager */,
+				4802D61C27AC00C900477E32 /* Utils */,
+				48DF7C4527A96A760048DE7B /* Managers */,
 				48DF7C4427A96A620048DE7B /* Extensions */,
 				48DF7C4327A96A5B0048DE7B /* Screens */,
 				48D7B69727A4D3F400455593 /* Info.plist */,
@@ -135,15 +145,13 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		48DF7C4527A96A760048DE7B /* Manager */ = {
+		48DF7C4527A96A760048DE7B /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				488075A127A755EE00E5A997 /* TimerManager.swift */,
-				48D7B6A127A5F28100455593 /* Time.swift */,
-				487119D427A9E3ED0015175F /* Button.swift */,
 				487119DD27AA2F9E0015175F /* ColorManager.swift */,
 			);
-			path = Manager;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		48DF7C4627A96ACA0048DE7B /* Pomodoro */ = {
@@ -333,7 +341,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -388,7 +396,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

@@ -18,7 +18,6 @@ class ColorManager {
   var delegate: ColorManagerDelegate?
 
   func changeColor(color: UIColor) {
-    print("aaa")
     self.delegate?.changeColor(color: color)
   }
 }
