@@ -11,15 +11,13 @@ The app, therefore, has a stopwatch function following good design practices. Th
 In addition, the app is customizable: you can also configure some things like colors, for example.
 
 
-
 ## ☃️ Technologies
 
-This application runs on iOS operating systems.
+This application runs on iOS operating systems and it was made with:
 
-It was built using the UIKit framework, using the View Code layout technique.
-
-The programming language is Swift.
-
+- Swift Programming Language
+- UIKit Framework
+- View Code
 
 ## 🪴 Instalation
 
