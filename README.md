@@ -10,6 +10,8 @@ The app, therefore, has a stopwatch function following good design practices. Th
 
 In addition, the app is customizable: you can also configure some things like colors, for example.
 
+<img src="https://i.ibb.co/M79X50z/device.png" alt="Demonstration" width="250"/>
+
 
 ## ☃️ Technologies
 
