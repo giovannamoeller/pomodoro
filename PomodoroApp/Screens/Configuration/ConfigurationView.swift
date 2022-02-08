@@ -46,7 +46,7 @@ class ConfigurationView: UIView {
     button.backgroundColor = UIColor(named: "Color1")
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
-    button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(colorButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "color1"
     return button
   }()
@@ -58,7 +58,7 @@ class ConfigurationView: UIView {
     button.backgroundColor = UIColor(named: "Color2")
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
-    button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(colorButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "color2"
     return button
   }()
@@ -70,7 +70,7 @@ class ConfigurationView: UIView {
     button.backgroundColor = UIColor(named: "Color3")
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
-    button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(colorButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "color3"
     return button
   }()
@@ -113,7 +113,7 @@ class ConfigurationView: UIView {
     button.titleLabel?.font = .init(name: Font.defaultOption.rawValue, size: 18.0)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
-    button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font1"
     return button
   }()
@@ -128,7 +128,7 @@ class ConfigurationView: UIView {
     button.titleLabel?.font = .init(name: Font.option2.rawValue, size: 18.0)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
-    button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font2"
     return button
   }()
@@ -143,7 +143,7 @@ class ConfigurationView: UIView {
     button.titleLabel?.font = .init(name: Font.option3.rawValue, size: 18.0)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
-    button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font3"
     return button
   }()
@@ -192,27 +192,22 @@ class ConfigurationView: UIView {
     addSubview(applyChangesButton)
   }
   
-  @objc func buttonPressed(_ sender: UIButton) {
-    
-    let buttons = [font1, font2, font3]
-    
-    for button in buttons {
-      //print(button.isSelected)
+  @objc func colorButtonPressed(_ sender: UIButton) {
+    switch sender.restorationIdentifier {
+    case "color1": colorSelected = UIColor.color1
+    case "color2": colorSelected = UIColor.color2
+    case "color3": colorSelected = UIColor.color3
+    default: fatalError("Color not available.")
     }
-    /*if let identifier = sender.restorationIdentifier {
-      switch identifier {
-      case "color1":
-        colorManager?.changeColor(color: .init(named: "Color1") ?? .clear)
-        fontManager?.changeFont(font: .defaultOption)
-      case "color2": colorManager?.changeColor(color: .init(named: "Color2") ?? .clear)
-      case "color3": colorManager?.changeColor(color: .init(named: "Color3") ?? .clear)
-      default: fatalError("identifier not found")
-      }
-    }*/
+    colorManager?.changeColor(color: colorSelected ?? .clear)
+  }
+  
+  @objc func fontButtonPressed(_ sender: UIButton) {
+    
+    
   }
   
   @objc func applyChangesButtonPressed() {
-    colorManager?.changeColor(color: self.colorSelected ?? .clear)
     fontManager?.changeFont(font: fontSelected)
     self.findViewController()?.dismiss(animated: true, completion: nil)
   }

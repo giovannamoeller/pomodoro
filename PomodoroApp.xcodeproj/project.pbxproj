@@ -18,6 +18,7 @@
 		4802D65B27B2127C00477E32 /* SpaceMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4802D65A27B2127C00477E32 /* SpaceMono-Bold.ttf */; };
 		4802D65D27B2128500477E32 /* RobotoSlab-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4802D65C27B2128500477E32 /* RobotoSlab-Bold.ttf */; };
 		4802D65F27B2128B00477E32 /* RobotoSlab-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4802D65E27B2128B00477E32 /* RobotoSlab-Regular.ttf */; };
+		4802D66327B216D600477E32 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4802D66227B216D600477E32 /* UIColor+Extensions.swift */; };
 		487119D327A9BBD70015175F /* PomodoroTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487119D227A9BBD70015175F /* PomodoroTextView.swift */; };
 		487119D527A9E3ED0015175F /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487119D427A9E3ED0015175F /* Button.swift */; };
 		487119D827AA265F0015175F /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487119D727AA265F0015175F /* ConfigurationView.swift */; };
@@ -53,6 +54,7 @@
 		4802D65A27B2127C00477E32 /* SpaceMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpaceMono-Bold.ttf"; sourceTree = "<group>"; };
 		4802D65C27B2128500477E32 /* RobotoSlab-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Bold.ttf"; sourceTree = "<group>"; };
 		4802D65E27B2128B00477E32 /* RobotoSlab-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Regular.ttf"; sourceTree = "<group>"; };
+		4802D66227B216D600477E32 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		487119D227A9BBD70015175F /* PomodoroTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTextView.swift; sourceTree = "<group>"; };
 		487119D427A9E3ED0015175F /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		487119D727AA265F0015175F /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			children = (
 				488075A327A75E0000E5A997 /* String+Extensions.swift */,
 				487119DB27AA2F360015175F /* UIView+Extensions.swift */,
+				4802D66227B216D600477E32 /* UIColor+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				48DF7C5627A9A5FD0048DE7B /* ConfigurationButtonView.swift in Sources */,
 				48DF7C5227A99F3C0048DE7B /* StartStopButtonView.swift in Sources */,
 				487119DE27AA2F9E0015175F /* ColorManager.swift in Sources */,
+				4802D66327B216D600477E32 /* UIColor+Extensions.swift in Sources */,
 				488075A227A755EE00E5A997 /* TimerManager.swift in Sources */,
 				48D7B68C27A4D3F200455593 /* SceneDelegate.swift in Sources */,
 			);
