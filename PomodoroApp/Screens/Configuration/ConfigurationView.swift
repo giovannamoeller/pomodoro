@@ -107,14 +107,13 @@ class ConfigurationView: UIView {
     let button = UIButton(type: .system)
     button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.heightAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-    button.backgroundColor = UIColor(named: "ButtonBackgroundColor")
     button.setTitle("Aa", for: .normal)
-    button.tintColor = UIColor(named: "BackgroundColor")
     button.titleLabel?.font = .init(name: Font.defaultOption.rawValue, size: 18.0)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
     button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font1"
+    buttonReleased(button: button)
     return button
   }()
   
@@ -122,14 +121,13 @@ class ConfigurationView: UIView {
     let button = UIButton(type: .system)
     button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.heightAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-    button.backgroundColor = UIColor(named: "ButtonBackgroundColor")
     button.setTitle("Aa", for: .normal)
-    button.tintColor = UIColor(named: "BackgroundColor")
     button.titleLabel?.font = .init(name: Font.option2.rawValue, size: 18.0)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
     button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font2"
+    buttonReleased(button: button)
     return button
   }()
   
@@ -137,17 +135,17 @@ class ConfigurationView: UIView {
     let button = UIButton(type: .system)
     button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.heightAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-    button.backgroundColor = UIColor(named: "ButtonBackgroundColor")
     button.setTitle("Aa", for: .normal)
-    button.tintColor = UIColor(named: "BackgroundColor")
     button.titleLabel?.font = .init(name: Font.option3.rawValue, size: 18.0)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
     button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font3"
+    buttonReleased(button: button)
     return button
   }()
   
+  private lazy var fontButtons = [font1, font2, font3]
   
   private lazy var fontsStackView: UIStackView = {
     let stackView = UIStackView()
@@ -203,8 +201,20 @@ class ConfigurationView: UIView {
   }
   
   @objc func fontButtonPressed(_ sender: UIButton) {
-    
-    
+    for button in fontButtons {
+      buttonReleased(button: button)
+    }
+    buttonPressed(button: sender)
+  }
+  
+  func buttonPressed(button: UIButton) {
+    button.backgroundColor = UIColor(named: "BackgroundColor")
+    button.tintColor = UIColor(named: "ButtonBackgroundColor")
+  }
+  
+  func buttonReleased(button: UIButton) {
+    button.backgroundColor = UIColor(named: "ButtonBackgroundColor")
+    button.tintColor = UIColor(named: "BackgroundColor")
   }
   
   @objc func applyChangesButtonPressed() {
