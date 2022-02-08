@@ -113,7 +113,7 @@ class ConfigurationView: UIView {
     button.clipsToBounds = true
     button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font1"
-    buttonReleased(button: button)
+    buttonPressed(button: button)
     return button
   }()
   
