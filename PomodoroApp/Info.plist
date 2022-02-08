@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>KumbhSans-SemiBold.ttf</string>
+		<string>KumbhSans-Regular.ttf</string>
+		<string>KumbhSans-Medium.ttf</string>
+		<string>KumbhSans-ExtraBold.ttf</string>
+		<string>KumbhSans-Bold.ttf</string>
+		<string>SpaceMono-Regular.ttf</string>
+		<string>SpaceMono-Bold.ttf</string>
+		<string>RobotoSlab-Bold.ttf</string>
+		<string>RobotoSlab-Regular.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

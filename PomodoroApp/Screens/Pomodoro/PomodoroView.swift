@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol ViewControllerDelegate {
-  func presentConfigurationView()
-}
-
 protocol SegmentedControlProtocol {
   func initSegmentedControl()
   func segmentedControlChanged(_ sender: UISegmentedControl)
@@ -25,8 +21,17 @@ protocol ConfigurationButtonProtocol {
   func configurationButtonPressed(_ sender: UIButton)
 }
 
-
-class PomodoroView: UIView, TimerManagerDelegate, ColorManagerDelegate {
+class PomodoroView: UIView, TimerManagerDelegate, ColorManagerDelegate, FontManagerDelegate {
+  
+  
+  func changeFont(font: Font) {
+    let font = UIFont.init(name: font.rawValue, size: 14.0)
+    let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "ButtonTextColorDisabled")!.withAlphaComponent(0.4), NSAttributedString.Key.font: font]
+    let highlitedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "HighlightedButtonColor")!, NSAttributedString.Key.font: font]
+    optionsView.setTitleTextAttributes(titleTextAttributes, for: .normal)
+    optionsView.setTitleTextAttributes(highlitedTitleTextAttributes, for: .selected)
+  }
+  
   
   func changeColor(color: UIColor) {
     optionsView.selectedSegmentTintColor = color
@@ -43,16 +48,17 @@ class PomodoroView: UIView, TimerManagerDelegate, ColorManagerDelegate {
   private lazy var circularProgressView = CircularProgressView()
   private lazy var configurationButtonView = ConfigurationButtonView()
   private lazy var startStopButton = StartStopButtonView()
-  
   private lazy var buttonCount = 0
   
   var timerManager = TimerManager()
   var colorManager = ColorManager()
+  var fontManager = FontManager()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     timerManager.delegate = self
     colorManager.delegate = self
+    fontManager.delegate = self
     configureUI()
     addSubviews()
     setUpConstraints()
@@ -149,6 +155,7 @@ extension PomodoroView: ConfigurationButtonProtocol {
   @objc func configurationButtonPressed(_ sender: UIButton) {
     let vc = ConfigurationViewController()
     vc.colorManager = colorManager
+    vc.fontManager = fontManager
     self.findViewController()?.present(vc, animated: true, completion: nil)
   }
 }
