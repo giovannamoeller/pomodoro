@@ -20,8 +20,7 @@ class TimeTextView: UILabel {
   
   func configureUI() {
     translatesAutoresizingMaskIntoConstraints = false
-    textColor = .white
-    font = .systemFont(ofSize: 48.0, weight: .heavy)
+    textColor = UIColor(named: "TextColor") ?? .white
+    font = .systemFont(size: 72.0, weight: .heavy)
   }
-  
 }

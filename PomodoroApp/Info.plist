@@ -13,6 +13,7 @@
 		<string>SpaceMono-Bold.ttf</string>
 		<string>RobotoSlab-Bold.ttf</string>
 		<string>RobotoSlab-Regular.ttf</string>
+		<string>RobotoSlab-ExtraBold.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

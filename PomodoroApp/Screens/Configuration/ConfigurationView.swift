@@ -10,8 +10,8 @@ import UIKit
 class ConfigurationView: UIView {
   
   private lazy var buttonWidth = 52.0
-  private lazy var colorSelected = UIColor(named: "Color3")
-  private lazy var fontSelected = Font.defaultOption
+  private var colorSelected = UIColor(named: "Color3")
+  private var fontSelected: Font
   
   var colorManager: ColorManager?
   var fontManager: FontManager?
@@ -21,9 +21,25 @@ class ConfigurationView: UIView {
     text.translatesAutoresizingMaskIntoConstraints = false
     text.text = "Settings"
     text.textColor = UIColor(named: "DarkBackgroundColor")
-    text.font = .init(name: Font.option3.rawValue, size: 18.0)
+    text.font = .systemFont(size: 18.0, weight: .bold, fontFamily: fontSelected)
     return text
   }()
+  
+  func addBottomLine(_ view: UIView, stickyToBounds: Bool = false) {
+    let bottomLine = UIView()
+    bottomLine.translatesAutoresizingMaskIntoConstraints = false
+    bottomLine.backgroundColor = UIColor(red: 227/255, green: 225/255, blue: 225/255, alpha: 1.0)
+    addSubview(bottomLine)
+    bottomLine.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 16.0).isActive = true
+    if stickyToBounds {
+      bottomLine.leadingAnchor.constraint(equalTo: view.superview!.leadingAnchor).isActive = true
+      bottomLine.trailingAnchor.constraint(equalTo: view.superview!.trailingAnchor).isActive = true
+    } else {
+      bottomLine.leadingAnchor.constraint(equalTo: view.superview!.leadingAnchor, constant: 64.0).isActive = true
+      bottomLine.trailingAnchor.constraint(equalTo: view.superview!.trailingAnchor, constant: -64.0).isActive = true
+    }
+    bottomLine.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
+  }
   
   private lazy var colorText: UILabel = {
     let text = UILabel()
@@ -31,7 +47,7 @@ class ConfigurationView: UIView {
     let attributedString = NSAttributedString(
       string: "color".uppercased(), attributes: [
         NSAttributedString.Key.kern: 2.0,
-      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold),
+      NSAttributedString.Key.font: UIFont.systemFont(size: 14.0, weight: .bold, fontFamily: fontSelected),
         NSAttributedString.Key.foregroundColor: UIColor(named: "DarkBackgroundColor")!
      ]
     )
@@ -95,7 +111,7 @@ class ConfigurationView: UIView {
     let attributedString = NSAttributedString(
       string: "font".uppercased(), attributes: [
         NSAttributedString.Key.kern: 2.0,
-      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold),
+      NSAttributedString.Key.font: UIFont.systemFont(size: 14.0, weight: .bold, fontFamily: fontSelected),
         NSAttributedString.Key.foregroundColor: UIColor(named: "DarkBackgroundColor")!
      ]
     )
@@ -108,12 +124,12 @@ class ConfigurationView: UIView {
     button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.heightAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.setTitle("Aa", for: .normal)
-    button.titleLabel?.font = .init(name: Font.defaultOption.rawValue, size: 18.0)
+    button.titleLabel?.font = .systemFont(size: 18.0, weight: .bold, fontFamily: .defaultOption)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
     button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
     button.restorationIdentifier = "font1"
-    buttonPressed(button: button)
+    buttonReleased(button: button)
     return button
   }()
   
@@ -122,7 +138,7 @@ class ConfigurationView: UIView {
     button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.heightAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.setTitle("Aa", for: .normal)
-    button.titleLabel?.font = .init(name: Font.option2.rawValue, size: 18.0)
+    button.titleLabel?.font = .systemFont(size: 18.0, weight: .bold, fontFamily: .option2)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
     button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
@@ -136,7 +152,7 @@ class ConfigurationView: UIView {
     button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.heightAnchor.constraint(equalToConstant: buttonWidth).isActive = true
     button.setTitle("Aa", for: .normal)
-    button.titleLabel?.font = .init(name: Font.option3.rawValue, size: 18.0)
+    button.titleLabel?.font = .systemFont(size: 18.0, weight: .bold, fontFamily: .option3)
     button.layer.cornerRadius = buttonWidth / 2.0
     button.clipsToBounds = true
     button.addTarget(self, action: #selector(fontButtonPressed(_:)), for: .touchUpInside)
@@ -164,7 +180,7 @@ class ConfigurationView: UIView {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.backgroundColor = UIColor(named: "Color1")
     button.setTitle("Apply", for: .normal)
-    button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .bold)
+    button.titleLabel?.font = .systemFont(size: 16.0, weight: .bold, fontFamily: fontSelected)
     button.layer.cornerRadius = 24.0
     button.tintColor = .white
     button.clipsToBounds = true
@@ -173,19 +189,35 @@ class ConfigurationView: UIView {
   }()
   
   init(frame: CGRect, colorManager: ColorManager, fontManager: FontManager) {
-    super.init(frame: frame)
     self.colorManager = colorManager
     self.fontManager = fontManager
+    self.fontSelected = fontManager.actualFont
+    super.init(frame: frame)
     backgroundColor = .white
     addSubviews()
     setUpConstraints()
+    checkFontSelected()
+  }
+  
+  func checkFontSelected() {
+    switch fontSelected {
+    case .defaultOption:
+      buttonPressed(button: font1)
+    case .option2:
+      buttonPressed(button: font2)
+    case .option3:
+      buttonPressed(button: font3)
+    }
   }
   
   func addSubviews() {
     addSubview(settingsText)
+    addBottomLine(settingsText, stickyToBounds: true)
     addSubview(colorText)
+    //addBottomLine(colorText)
     addSubview(colorsStackView)
     addSubview(fontText)
+    //addBottomLine(fontText)
     addSubview(fontsStackView)
     addSubview(applyChangesButton)
   }
@@ -205,7 +237,6 @@ class ConfigurationView: UIView {
       buttonReleased(button: button)
     }
     buttonPressed(button: sender)
-    
     switch sender.restorationIdentifier {
     case "font1": fontSelected = Font.defaultOption
     case "font2": fontSelected = Font.option2
@@ -226,13 +257,13 @@ class ConfigurationView: UIView {
   }
   
   @objc func applyChangesButtonPressed() {
-    fontManager?.changeFont(font: fontSelected)
+    fontManager?.setActualFont(font: fontSelected)
     self.findViewController()?.dismiss(animated: true, completion: nil)
   }
   
   func setUpConstraints() {
     NSLayoutConstraint.activate([
-      settingsText.centerXAnchor.constraint(equalTo: centerXAnchor),
+      settingsText.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
       settingsText.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32.0),
       
       colorText.centerXAnchor.constraint(equalTo: centerXAnchor),

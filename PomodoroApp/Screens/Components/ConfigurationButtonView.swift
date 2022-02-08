@@ -20,7 +20,7 @@ class ConfigurationButtonView: UIButton {
   func configureUI() {
     translatesAutoresizingMaskIntoConstraints = false
     setBackgroundImage(UIImage(systemName: "gearshape.fill"), for: .normal)
-    tintColor = UIColor(named: "ButtonTextColorDisabled")?.withAlphaComponent(0.4)
+    tintColor = UIColor(named: "TextColor")?.withAlphaComponent(0.4)
     NSLayoutConstraint.activate([
       widthAnchor.constraint(equalToConstant: 32.0),
       heightAnchor.constraint(equalToConstant: 32.0)

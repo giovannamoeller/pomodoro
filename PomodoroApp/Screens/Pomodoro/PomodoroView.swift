@@ -23,13 +23,23 @@ protocol ConfigurationButtonProtocol {
 
 class PomodoroView: UIView, TimerManagerDelegate, ColorManagerDelegate, FontManagerDelegate {
   
-  
   func changeFont(font: Font) {
-    let font = UIFont.init(name: font.rawValue, size: 14.0)
-    let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "ButtonTextColorDisabled")!.withAlphaComponent(0.4), NSAttributedString.Key.font: font]
-    let highlitedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "HighlightedButtonColor")!, NSAttributedString.Key.font: font]
+    
+    // Pomodoro Text
+    pomodoroTitleTextView.font = .systemFont(size: 24.0, weight: .bold, fontFamily: font)
+    
+    // Option View
+    let optionViewFont: UIFont = .systemFont(size: 13.0, weight: .bold, fontFamily: font)
+    let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "TextColor")!.withAlphaComponent(0.4), NSAttributedString.Key.font: optionViewFont]
+    let highlitedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "HighlightedButtonColor")!, NSAttributedString.Key.font: optionViewFont]
     optionsView.setTitleTextAttributes(titleTextAttributes, for: .normal)
     optionsView.setTitleTextAttributes(highlitedTitleTextAttributes, for: .selected)
+    
+    // Time Text
+    circularProgressView.timeText.font = .systemFont(size: 72.0, weight: font == .option2 ? .heavy : .bold, fontFamily: font)
+    
+    // Start Stop Button
+    startStopButton.changeFont(font: font)
   }
   
   

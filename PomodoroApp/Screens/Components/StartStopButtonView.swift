@@ -23,8 +23,8 @@ class StartStopButtonView: UIButton {
     let attributedString = NSAttributedString(
       string: Button.start.rawValue.uppercased(), attributes: [
         NSAttributedString.Key.kern: 2.0,
-      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold),
-      NSAttributedString.Key.foregroundColor: UIColor.white
+      NSAttributedString.Key.font: UIFont.systemFont(size: 14.0, weight: .bold),
+      NSAttributedString.Key.foregroundColor: UIColor(named: "TextColor") ?? .clear
      ]
     )
     setAttributedTitle(attributedString, for: .normal)
@@ -34,8 +34,19 @@ class StartStopButtonView: UIButton {
     let attributedString = NSAttributedString(
       string: button.rawValue.uppercased(), attributes: [
         NSAttributedString.Key.kern: 2.0,
-      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold),
-      NSAttributedString.Key.foregroundColor: UIColor.white
+      NSAttributedString.Key.font: UIFont.systemFont(size: 14.0, weight: .bold),
+      NSAttributedString.Key.foregroundColor: UIColor(named: "TextColor") ?? .clear
+     ]
+    )
+    setAttributedTitle(attributedString, for: .normal)
+  }
+  
+  func changeFont(font: Font) {
+    let attributedString = NSAttributedString(
+      string: Button.start.rawValue.uppercased(), attributes: [
+        NSAttributedString.Key.kern: 2.0,
+      NSAttributedString.Key.font: UIFont.systemFont(size: 14.0, weight: .bold, fontFamily: font),
+      NSAttributedString.Key.foregroundColor: UIColor(named: "TextColor") ?? .clear
      ]
     )
     setAttributedTitle(attributedString, for: .normal)

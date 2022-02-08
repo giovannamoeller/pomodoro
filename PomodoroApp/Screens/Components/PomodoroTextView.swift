@@ -22,6 +22,6 @@ class PomodoroTextView: UILabel {
     translatesAutoresizingMaskIntoConstraints = false
     textColor = .white
     text = "pomodoro"
-    font = .systemFont(ofSize: 24.0, weight: .bold)
+    font = .systemFont(size: 24.0, weight: .bold)
   }
 }

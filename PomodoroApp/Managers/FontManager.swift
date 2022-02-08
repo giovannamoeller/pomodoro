@@ -14,8 +14,17 @@ protocol FontManagerDelegate {
 
 class FontManager {
   var delegate: FontManagerDelegate?
+  var actualFont: Font
+  
+  func setActualFont(font: Font) {
+    self.actualFont = font
+  }
 
   func changeFont(font: Font) {
     self.delegate?.changeFont(font: font)
+  }
+  
+  init() {
+    self.actualFont = .defaultOption
   }
 }
