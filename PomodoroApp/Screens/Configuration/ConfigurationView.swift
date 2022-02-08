@@ -205,6 +205,14 @@ class ConfigurationView: UIView {
       buttonReleased(button: button)
     }
     buttonPressed(button: sender)
+    
+    switch sender.restorationIdentifier {
+    case "font1": fontSelected = Font.defaultOption
+    case "font2": fontSelected = Font.option2
+    case "font3": fontSelected = Font.option3
+    default: fatalError("Font not available.")
+    }
+    fontManager?.changeFont(font: fontSelected)
   }
   
   func buttonPressed(button: UIButton) {
