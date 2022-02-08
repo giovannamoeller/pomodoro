@@ -92,8 +92,8 @@ class PomodoroView: UIView, TimerManagerDelegate, ColorManagerDelegate, FontMana
   
   func configureUI() {
     backgroundColor = UIColor(named: "BackgroundColor")
-    optionsView.selectedSegmentTintColor = ColorManager.actualColor
-    circularProgressView.changeProgressColor(color: ColorManager.actualColor)
+    optionsView.selectedSegmentTintColor = colorManager.actualColor
+    circularProgressView.changeProgressColor(color: colorManager.actualColor)
   }
   
   func setUpConstraints() {

@@ -13,9 +13,12 @@ protocol ColorManagerDelegate {
 }
 
 class ColorManager {
-  static var actualColor: UIColor = .init(named: "Color1") ?? .clear
-  
+  var actualColor: UIColor = .init(named: "Color1") ?? .clear
   var delegate: ColorManagerDelegate?
+  
+  func setActualColor(color: UIColor) {
+    self.actualColor = color
+  }
 
   func changeColor(color: UIColor) {
     self.delegate?.changeColor(color: color)

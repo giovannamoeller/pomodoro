@@ -23,4 +23,8 @@ extension UIFont {
         
     return UIFont(name: "\(fontFamily.rawValue)\(fontPrefix)", size: fontSize) ?? .systemFont(ofSize: UIFont.defaultSize)
   }
+  
+  static func changeTextFont(font: Font) -> UIFont {
+    return UIFont.systemFont(size: 14.0, weight: .bold, fontFamily: font)
+  }
 }

@@ -9,8 +9,15 @@ import UIKit
 
 class ConfigurationView: UIView {
   
+  func changeFont(font: Font) {
+    settingsText.font = .systemFont(size: 18.0, weight: .bold, fontFamily: font)
+    fontText.font = UIFont.changeTextFont(font: font)
+    colorText.font = UIFont.changeTextFont(font: font)
+    applyChangesButton.titleLabel?.font = .systemFont(size: 16.0, weight: .bold, fontFamily: font)
+  }
+  
   private lazy var buttonWidth = 52.0
-  private var colorSelected = UIColor(named: "Color3")
+  private var colorSelected: UIColor
   private var fontSelected: Font
   
   var colorManager: ColorManager?
@@ -25,35 +32,20 @@ class ConfigurationView: UIView {
     return text
   }()
   
-  func addBottomLine(_ view: UIView, stickyToBounds: Bool = false) {
-    let bottomLine = UIView()
-    bottomLine.translatesAutoresizingMaskIntoConstraints = false
-    bottomLine.backgroundColor = UIColor(red: 227/255, green: 225/255, blue: 225/255, alpha: 1.0)
-    addSubview(bottomLine)
-    bottomLine.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 16.0).isActive = true
-    if stickyToBounds {
-      bottomLine.leadingAnchor.constraint(equalTo: view.superview!.leadingAnchor).isActive = true
-      bottomLine.trailingAnchor.constraint(equalTo: view.superview!.trailingAnchor).isActive = true
-    } else {
-      bottomLine.leadingAnchor.constraint(equalTo: view.superview!.leadingAnchor, constant: 64.0).isActive = true
-      bottomLine.trailingAnchor.constraint(equalTo: view.superview!.trailingAnchor, constant: -64.0).isActive = true
-    }
-    bottomLine.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
-  }
-  
   private lazy var colorText: UILabel = {
     let text = UILabel()
     text.translatesAutoresizingMaskIntoConstraints = false
     let attributedString = NSAttributedString(
       string: "color".uppercased(), attributes: [
         NSAttributedString.Key.kern: 2.0,
-      NSAttributedString.Key.font: UIFont.systemFont(size: 14.0, weight: .bold, fontFamily: fontSelected),
+        NSAttributedString.Key.font: UIFont.changeTextFont(font: fontSelected),
         NSAttributedString.Key.foregroundColor: UIColor(named: "DarkBackgroundColor")!
      ]
     )
     text.attributedText = attributedString
     return text
   }()
+  
   
   private lazy var color1: UIButton = {
     let button = UIButton()
@@ -166,7 +158,7 @@ class ConfigurationView: UIView {
   private lazy var fontsStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    [font1, font2, font3].forEach { button in
+    fontButtons.forEach { button in
       stackView.addArrangedSubview(button)
     }
     stackView.axis = .horizontal
@@ -192,11 +184,13 @@ class ConfigurationView: UIView {
     self.colorManager = colorManager
     self.fontManager = fontManager
     self.fontSelected = fontManager.actualFont
+    self.colorSelected = colorManager.actualColor
     super.init(frame: frame)
     backgroundColor = .white
     addSubviews()
     setUpConstraints()
     checkFontSelected()
+    checkColorSelected()
   }
   
   func checkFontSelected() {
@@ -212,7 +206,7 @@ class ConfigurationView: UIView {
   
   func addSubviews() {
     addSubview(settingsText)
-    addBottomLine(settingsText, stickyToBounds: true)
+    settingsText.addBottomLineToView(stickyToBounds: true)
     addSubview(colorText)
     //addBottomLine(colorText)
     addSubview(colorsStackView)
@@ -222,14 +216,45 @@ class ConfigurationView: UIView {
     addSubview(applyChangesButton)
   }
   
+  private lazy var colorButtons = [color1, color2, color3]
+  
   @objc func colorButtonPressed(_ sender: UIButton) {
+    for button in colorButtons {
+      deselectColorButton(button: button)
+    }
+    checkmarkColorButton(button: sender)
+    
     switch sender.restorationIdentifier {
     case "color1": colorSelected = UIColor.color1
     case "color2": colorSelected = UIColor.color2
     case "color3": colorSelected = UIColor.color3
     default: fatalError("Color not available.")
     }
-    colorManager?.changeColor(color: colorSelected ?? .clear)
+    colorManager?.changeColor(color: colorSelected)
+  }
+  
+  func checkColorSelected() {
+    switch colorSelected {
+    case UIColor(named: "Color1"):
+      checkmarkColorButton(button: color1)
+    case UIColor(named: "Color2"):
+      checkmarkColorButton(button: color2)
+    case UIColor(named: "Color3"):
+      checkmarkColorButton(button: color3)
+    default:
+      checkmarkColorButton(button: color1)
+    }
+  }
+  
+  func checkmarkColorButton(button: UIButton) {
+    let configuration = UIImage.SymbolConfiguration(font: .systemFont(weight: .bold, fontFamily: fontSelected))
+    let image = UIImage(systemName: "checkmark", withConfiguration: configuration)
+    button.setImage(image, for: .normal)
+    button.tintColor = UIColor(named: "DarkBackgroundColor")
+  }
+  
+  func deselectColorButton(button: UIButton) {
+    button.setImage(nil, for: .normal)
   }
   
   @objc func fontButtonPressed(_ sender: UIButton) {
@@ -243,6 +268,7 @@ class ConfigurationView: UIView {
     case "font3": fontSelected = Font.option3
     default: fatalError("Font not available.")
     }
+    changeFont(font: fontSelected)
     fontManager?.changeFont(font: fontSelected)
   }
   
@@ -258,6 +284,7 @@ class ConfigurationView: UIView {
   
   @objc func applyChangesButtonPressed() {
     fontManager?.setActualFont(font: fontSelected)
+    colorManager?.setActualColor(color: colorSelected)
     self.findViewController()?.dismiss(animated: true, completion: nil)
   }
   
