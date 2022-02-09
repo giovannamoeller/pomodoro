@@ -39,9 +39,9 @@ class PomodoroView: UIView, TimerManagerDelegate, ColorManagerDelegate, FontMana
     circularProgressView.timeText.font = .systemFont(size: 72.0, weight: font == .option2 ? .heavy : .bold, fontFamily: font)
     
     // Start Stop Button
-    startStopButton.changeFont(font: font)
+    startStopButton.changeFontSelected(font: font)
+    startStopButton.setButtonTitle(.start)
   }
-  
   
   func changeColor(color: UIColor) {
     optionsView.selectedSegmentTintColor = color

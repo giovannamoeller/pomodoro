@@ -14,6 +14,7 @@ class ConfigurationView: UIView {
     fontText.font = UIFont.changeTextFont(font: font)
     colorText.font = UIFont.changeTextFont(font: font)
     applyChangesButton.titleLabel?.font = .systemFont(size: 16.0, weight: .bold, fontFamily: font)
+    checkBackgroundLight()
   }
   
   private lazy var buttonWidth = 52.0
@@ -168,7 +169,7 @@ class ConfigurationView: UIView {
   }()
   
   private lazy var applyChangesButton: UIButton = {
-    let button = UIButton()
+    let button = UIButton(type: .system)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.backgroundColor = UIColor(named: "Color1")
     button.setTitle("Apply", for: .normal)
@@ -230,7 +231,18 @@ class ConfigurationView: UIView {
     case "color3": colorSelected = UIColor.color3
     default: fatalError("Color not available.")
     }
+    applyChangesButton.backgroundColor = colorSelected
     colorManager?.changeColor(color: colorSelected)
+    checkBackgroundLight()
+  }
+  
+  func checkBackgroundLight() {
+    if colorSelected == UIColor.color2 {
+      print("entrou")
+      applyChangesButton.tintColor = UIColor(named: "DarkBackgroundColor")
+    } else {
+      applyChangesButton.tintColor = .white
+    }
   }
   
   func checkColorSelected() {
